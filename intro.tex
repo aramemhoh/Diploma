@@ -1,12 +1,23 @@
-\documentclass[oneside, a4paper, final, 14 pt]{extarticle}
+\documentclass[a4paper, final, 14 pt]{extarticle}
+\usepackage{geometry}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
-\usepackage{vmargin}
-\usepackage{graphicx}
-\setpapersize{A4}
-\setmarginsrb{2cm}{1.5cm}{1cm}{1.5cm}{0pt}{0mm}{0pt}{13mm}
+\usepackage{pscyr}
 \usepackage{indentfirst}
-\linespread{1.5}
+\usepackage{cite}
+\usepackage{tocloft}
+\usepackage{graphicx}
+\usepackage[linktocpage=true,plainpages=false,pdfpagelabels=false]{hyperref}
+
+
+\geometry{a4paper, top=1.5cm, bottom=1.5cm, left=2cm, right=1cm}
+\makeatletter
+\bibliographystyle{ieeetr}
+\makeatother
+\renewcommand{\rmdefault}{ftm}
+\linespread{1.3}
 \sloppy
 
 \newenvironment{compactlist} {
@@ -61,7 +72,8 @@
 
 \setcounter{tocdepth}{2}
 \tableofcontents
-\newpage
+\clearpage
+
 
 \section{Семантическая паутина}
 
@@ -78,22 +90,24 @@
 позволяющие работать с данными из заданной предметной области. Рассмотрим подробнее некоторые 
 технологии.
 
-\textbf{Среда описания ресурса} \cite{rdf} (\emph{RDF, Resource Description Framework})~--- модель для 
+\textbf{Среда описания ресурса}~\cite{web:rdf} (\emph{RDF, Resource Description Framework})~--- модель для 
 представления данных, в особенности~--- метаданных. Среда предоставляет утверждения о ресурсах в 
 пригодном для машинной обработки виде. Ресурсом может быть абсолютно любая сущность. Утверждение о 
-ресурсе имеет вид "<субъект~-- предикат~-- объект"> и называется \emph{триплетом}. Для обозначения 
-каждого элемента используются \emph{уникальные идентификаторы ресурса (URI)}. Множество всех 
-утверждений образует ориентированный граф, в котором вершинами являются субъекты и объекты, а ребра 
-помечены предикатами. RDF имеет несколько различных вариантов представлений. Самый популярный на 
-сегодняшний день~--- \emph{RDF/XML}.
+ресурсе имеет вид "<субъект~-- предикат~-- объект"> и называется \emph{триплетом} или RDF-тройкой. 
+Для обозначения каждого элемента используются \emph{уникальные идентификаторы ресурса (URI)}. 
+Множество всех утверждений образует ориентированный граф, в котором вершинами являются 
+субъекты и объекты, а ребра помечены предикатами. RDF имеет несколько различных вариантов представлений. 
+Самый популярный на сегодняшний день~--- \emph{RDF/XML}. Для хранения данных используются специальные 
+RDF-хранилища, предоставляющие различный функционал для работы с данными, в том числе, иногда 
+SPARQL-точку доступа для публикации данных в Сети.
 
-\textbf{Язык описания онтологий} \cite{owl} (\emph{OWL, Web Onthology Language})~--- язык для описания
+\textbf{Язык описания онтологий}~\cite{web:owl} (\emph{OWL, Web Onthology Language})~--- язык для описания
 веб-онтологий. Термин \emph{онтология}, взятый из философии, это раздел, описывающий формы бытия.
 Веб-онтология это набор знаний об определенной предметной области. Она может включать в себя описание
 классов, свойств, экземпляров классов и операций над ними. Кроме того, онтологии могут описывать,
 как получить из данной онтологии некоторые логические следствия.
 
-\textbf{Язык запросов SPARQL} \cite{sparql} (\emph{SPARQL Protocol and RDF Query Language})~--- язык
+\textbf{Язык запросов SPARQL}~\cite{web:sparql} (\emph{SPARQL Protocol and RDF Query Language})~--- язык
 запросов к данным, представленным в модели RDF и протокол для передачи этих запросов и ответов к ним.
 Предоставление SPARQL-точек доступа является рекомендацией Консорциума при публикации данных во
 всемирной паутине.
@@ -101,7 +115,7 @@
 \bigskip
 \section{Связанные открытые данные}
 
-\emph{Связанные открытые данные} \cite{lod} (LOD, Linked Open Data)~--- метод публикации структурированных 
+\emph{Связанные открытые данные}~\cite{article:lod} (LOD, Linked Open Data)~--- метод публикации структурированных 
 данных в стандартных форматах семантической паутины, при котором все данные связываются с ранее 
 опубликованными. 
 
@@ -113,12 +127,6 @@
   форматов, например, RDF или SPARQL;
   \item При публикации данных в сети также публиковать ссылки на схожие данные (используя URI).
 \end{compactlist}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{cloud12.png}
-  \caption{Диаграмма LOD}
-  \label{lod:datasets}
-\end{figure}
 
 На~рис.~\ref{lod:datasets} показана диаграмма источников данных, опубликованных в LOD к 2012 году. Сейчас
 можно сказать, что в развитии LOD наступила вторая фаза. В начале развития идеи (2006--2007 года)
@@ -127,38 +135,105 @@ LOD. Основной проблемой всех данных является 
 различные приемы по автоматизации поиска уже опубликованных данных, относящихся к данной предметной
 области и привязывания к ним своих данных.
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.75\textwidth]{cloud12.png}
+  \caption{Диаграмма LOD}
+  \label{lod:datasets}
+\end{figure}
+
 \newpage
-\section{Vocabulary of Interlinked Datasets}
+\section{Словарь взаимосвязанных данных}
+
+\emph{Словарь взаимосвязанных данных}~\cite{web:void,article:void} (VoID, Vocabulary of Interlinked Datasets)~--- 
+словарь, описывающий метаданные об RDF-хранилище. Для описания словаря используется RDF Schema~\cite{web:rdfs}
+(набор классов для описания онтологий). VoID был придуман как связующее звено между теми кто публикует 
+данные в Сети, и теми, кто их будет использовать. Эти словари могут использоваться в различных
+ситуациях, от каталогизации и архивирования хранилищ до исследования данных, но чаще всего они 
+используются для поиска необходимой информации.
+
+VoID покрывает четыре аспекта метаданных: основные метаданные, метаданные доступа, структурные 
+метаданные и связи с другими хранилищами.
+
+\emph{Основные метаданные}, соответсвуют стандарту Дублинского ядра (Dublin Core)~\cite{web:dublincore}. 
+Они содержат такую информацию, как название и краткое описание хранилища, лицензия, под которой 
+распространяются данные, а также информацию о предметной области. Эти метаданные помогают 
+пользователю понять, насколько информация, содержащаяся в хранилище, подходит для целей этого пользователя. 
+
+\emph{Метаданные доступа}, описывающие как можно получить доступ к данным. Наборы данных в VoID 
+определяются как наборы RDF-троек, но на самом деле, эти триплеты не описываются в словаре. Вместо
+этого с помощью метаданных доступа описываются методы доступа непосредственно к триплетам, используемым
+в описании VoID. Например, здесь можно указать SPARQL-точку доступа, которая предоставляет доступ к
+описываемому хранилищу. 
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.75\textwidth]{linkset.png}
+  \caption{Диаграмма типичного набора связей DBPedia2Geonames}
+  \label{lod:linkset}
+\end{figure}
+
+\emph{Структурные метаданные}, описывающие структуру и схему хранилища и используемые, например,
+для запросов к данным. Эти метаданные дают информацию о схеме и внутренней структуре хранилища и 
+используются для исследования хранилища и выполнения запросов к нему. Например, в этом разделе 
+указывается информация о словарях, используемых в хранилище, размере хранилища и примеры ресурсов
+типичных, для данного хранилища.
+
+\emph{Наборы связей} (Linksets), описывающие как различные хранилища соотносятся друг с другом и 
+используются вместе.
+
+На~рис.~\ref{lod:linkset} показан пример набора связей. Можно видеть, что DBPedia содержит подмножество
+связей \emph{owl:sameAs}, соединяющих ресурсы DBPedia и Geonames.
+
+
 
 \newpage
 \section{Постановка задачи}
+В рамках дипломной работы необходимо разработать программу, которая будет генерировать VoID-дескрипторы
+для заданного RDF-хранилища.
+
+За основу будет взята статья~\cite{article:voidauto}, в которой описывается алгоритм генерации 
+VoID-дескрипторов для большого объема данных, полученных автоматически с помощью специальной 
+программы (crawler), на примере Billion Triples Challenge (BTC)~\cite{web:btc}.
+
+Алгоритм, предложенный в статье, должен быть модифицирован. В исследуемых в ходе работы хранилищах
+присутствует механизм автоматического связывания с другими хранилищами, основанными на 
+Silk-framework~\cite{web:silk}. Предполагается, что на основе правил связывания будут построены 
+соответствующие связи в VoID-дескрипторах.
 
 \newpage
-\begin{thebibliography}{00}
-  \bibitem{article:semweb}
-  Berners-Lee~T., James~H., Lassila~O.
-  \emph{The Semantic Web.}\\ Scientific American Magazine,  March 26, 2008.
 
-  \bibitem{rdf}
-  RDF\\
-  \texttt{http://www.w3.org/TR/rdf-concepts/}
+\bibliography{biblio}
 
-  \bibitem{owl}
-  OWL\\
-  \texttt{http://www.w3.org/TR/owl-semantics/}
+% \begin{thebibliography}{00}
+%   \bibitem{article:semweb}
+%   Berners-Lee~T., James~H., Lassila~O.
+%   \emph{}\\ Scientific American Magazine,  March 26, 2008.
 
-  \bibitem{sparql}
-  SPARQL\\
-  \texttt{http://www.w3.org/TR/rdf-sparql-query/}
+%   \bibitem{rdf}
+%   RDF\\
+%   \texttt{http://www.w3.org/TR/rdf-concepts/}
 
-  \bibitem{lod}
-  Heath~T., Bizer~C.
-  \emph{Linked Data: Evolving the Web into a Global Data Space}\\ Synthesis Lectures on the Semantic Web: Theory and Technology, 2011.
+%   \bibitem{owl}
+%   OWL\\
+%   \texttt{http://www.w3.org/TR/owl-semantics/}
 
-  \bibitem{void}
-  Keith~A., Cygainiak~R., Hausenblas~M., Zhao~J.
-  \emph{On the Design and Usage of voiD, the ``Vocabulary Of Interlinked Datasets''}, LDOW, 2009.
+%   \bibitem{sparql}
+%   SPARQL\\
+%   \texttt{http://www.w3.org/TR/rdf-sparql-query/}
 
-\end{thebibliography}
+%   \bibitem{lod}
+%   Heath~T., Bizer~C.
+%   \emph{Linked Data: Evolving the Web into a Global Data Space}\\ Synthesis Lectures on the Semantic Web: Theory and Technology, 2011.
+
+%   \bibitem{void}
+%   Keith~A., Cygainiak~R., Hausenblas~M., Zhao~J.
+%   \emph{On the Design and Usage of voiD, the ``Vocabulary Of Interlinked Datasets''}, LDOW, 2009.
+
+%   \bibitem{void:}
+%   Keith~A., Cygainiak~R., Hausenblas~M., Zhao~J.
+%   \emph{On the Design and Usage of voiD, the ``Vocabulary Of Interlinked Datasets''}, LDOW, 2009.
+
+% \end{thebibliography}
 
 \end{document}
